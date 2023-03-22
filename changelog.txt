@@ -5,3 +5,6 @@
 ## Fixed
 - Made logout in nav bar a post request
 - Updated logout route to logout and flash success
+
+## Added
+- Added header image, bio, location to user profile
