@@ -47,7 +47,7 @@ class LoginForm(FlaskForm):
 
 class EditUserForm(FlaskForm):
     """Form to update user's information."""
-
+    #TODO: Add length restrictions
     username = StringField(
         'Username',
         validators=[DataRequired()]
@@ -78,14 +78,6 @@ class EditUserForm(FlaskForm):
         'Enter Password',
         validators=[DataRequired()]
     )
-
-#     username
-# email
-# image_url
-# header_image_url
-# bio
-# password [see below]
-
 
 
 class CSRFForm(FlaskForm):

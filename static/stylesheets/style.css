@@ -26,6 +26,9 @@ body.error-404 {
   padding: 0;
   text-decoration: underline;
   cursor: pointer;
+  color: #66757f;
+  font-size: 13px;
+  font-weight: bold;
 }
 
 /* ======================= Nav */

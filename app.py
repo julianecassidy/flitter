@@ -6,7 +6,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 
 from forms import UserAddForm, LoginForm, MessageForm, CSRFForm, EditUserForm
-from models import db, connect_db, User, Message
+from models import db, connect_db, User, Message,DEFAULT_HEADER_IMAGE_URL, DEFAULT_IMAGE_URL
 
 load_dotenv()
 
@@ -252,8 +252,8 @@ def profile():
             user.username = form.username.data
             user.email = form.email.data
             user.bio =  form.bio.data
-            user.image_url = form.image_url.data
-            user.header_image_url = form.header_image_url.data
+            user.image_url = form.image_url.data or DEFAULT_IMAGE_URL
+            user.header_image_url = form.header_image_url.data or DEFAULT_HEADER_IMAGE_URL
 
             flash("Profile updated.", "success")
 
@@ -261,19 +261,6 @@ def profile():
             return redirect(f"/users/{user.id}")
     else:
         return render_template("users/edit.html", form=form)
-
-
-
-
-    # Check if user in session
-        # Show a form to update everything, include pw field
-        # Try to auth w/ password
-            # If successful, update the db and instance
-            # Redirect to user detail page
-        # If auth unsuccessful, flash error and show form again, make sure
-        # entered data appears in form
-
-
 
 @app.post('/users/delete')
 def delete_user():
@@ -286,10 +273,15 @@ def delete_user():
         flash("Access unauthorized.", "danger")
         return redirect("/")
 
-    do_logout()
+    form = g.csrf_form
 
-    db.session.delete(g.user)
-    db.session.commit()
+    if form.validate_on_submit():
+        do_logout()
+        db.session.delete(g.user)
+        db.session.commit()
+        flash("Profile deleted.", "success")
+    else:
+        return redirect(f"/users/{g.user.id}")
 
     return redirect("/signup")
 

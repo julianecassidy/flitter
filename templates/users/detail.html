@@ -55,6 +55,7 @@
               Edit Profile
             </a>
             <form method="POST" action="/users/delete">
+                {{ g.csrf_form.hidden_tag()}}
               <button class="btn btn-outline-danger ms-2">
                 Delete Profile
               </button>
