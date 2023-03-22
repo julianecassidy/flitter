@@ -10,7 +10,7 @@
         <div class="card-inner">
           <div class="image-wrapper">
             <img src="{{ followed_user.header_image_url }}"
-                 alt=""
+                 alt="Header image for {{followed_user.username}}"
                  class="card-hero">
           </div>
           <div class="card-contents">
@@ -35,7 +35,7 @@
             {% endif %}
 
           </div>
-          <p class="card-bio">BIO HERE</p>
+          <p class="card-bio">{{followed_user.bio}}</p>
         </div>
       </div>
     </div>

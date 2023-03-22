@@ -14,7 +14,7 @@
           <div class="card-inner">
             <div class="image-wrapper">
               <img src="{{ user.header_image_url }}"
-                   alt=""
+                   alt="Header image for {{user.username}}"
                    class="card-hero">
             </div>
             <div class="card-contents">
@@ -44,7 +44,7 @@
               {% endif %}
 
             </div>
-            <p class="card-bio">BIO HERE</p>
+            <p class="card-bio">{{user.bio}}</p>
           </div>
         </div>
       </div>
