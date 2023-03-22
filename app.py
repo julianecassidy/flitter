@@ -371,10 +371,10 @@ def homepage():
     if g.user:
         messages = (Message
                     .query
+                    .filter((Message.user_id.in_(following_ids)))
                     .order_by(Message.timestamp.desc())
-                    .filter((Message.user_id.in_(following_ids))
                     .limit(100)
-                    .all()))
+                    .all())
 
         return render_template('home.html', messages=messages)
 
