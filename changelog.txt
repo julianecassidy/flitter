@@ -5,6 +5,9 @@
 ## Fixed
 - Made logout in nav bar a post request
 - Updated logout route to logout and flash success
+- Fixed the hero image sizing
 
 ## Added
 - Added header image, bio, location to user profile
+- Added ability to edit user profiles
+- Show bio on user cards
