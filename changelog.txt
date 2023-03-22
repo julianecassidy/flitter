@@ -6,6 +6,7 @@
 - Made logout in nav bar a post request
 - Updated logout route to logout and flash success
 - Fixed the hero image sizing
+- CSRF token necessary for deleting a profile
 
 ## Added
 - Added header image, bio, location to user profile

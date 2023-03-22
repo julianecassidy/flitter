@@ -277,6 +277,7 @@ def delete_user():
 
     if form.validate_on_submit():
         do_logout()
+        Message.query.filter(Message.user_id==g.user.id).delete()
         db.session.delete(g.user)
         db.session.commit()
         flash("Profile deleted.", "success")
