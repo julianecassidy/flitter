@@ -5,7 +5,7 @@ from flask import Flask, render_template, request, flash, redirect, session, g
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 
-from forms import UserAddForm, LoginForm, MessageForm, CSRFForm
+from forms import UserAddForm, LoginForm, MessageForm, CSRFForm, EditUserForm
 from models import db, connect_db, User, Message
 
 load_dotenv()
@@ -234,7 +234,45 @@ def stop_following(follow_id):
 def profile():
     """Update profile for current user."""
 
-    # IMPLEMENT THIS
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
+    form = EditUserForm(obj=g.user)
+
+    if form.validate_on_submit():
+        password_input = form.password.data
+        user = User.authenticate(g.user.username, password_input)
+
+        if not user:
+            flash("Invalid password.", "danger")
+            return render_template("users/edit.html", form=form)
+
+        else:
+            user.username = form.username.data
+            user.email = form.email.data
+            user.bio =  form.bio.data
+            user.image_url = form.image_url.data
+            user.header_image_url = form.header_image_url.data
+
+            flash("Profile updated.", "success")
+
+            db.session.commit()
+            return redirect(f"/users/{user.id}")
+    else:
+        return render_template("users/edit.html", form=form)
+
+
+
+
+    # Check if user in session
+        # Show a form to update everything, include pw field
+        # Try to auth w/ password
+            # If successful, update the db and instance
+            # Redirect to user detail page
+        # If auth unsuccessful, flash error and show form again, make sure
+        # entered data appears in form
+
 
 
 @app.post('/users/delete')
@@ -331,7 +369,7 @@ def homepage():
                     .order_by(Message.timestamp.desc())
                     .limit(100)
                     .all())
-        
+
         return render_template('home.html', messages=messages)
 
     else:
