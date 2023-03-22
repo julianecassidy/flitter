@@ -37,6 +37,13 @@ def add_user_to_g():
         g.user = None
 
 
+@app.before_request
+def add_csrf_form_to_g():
+    """Add csrf form to Flask global."""
+    # breakpoint()
+    g.csrf_form = CSRFForm()
+
+
 def do_login(user):
     """Log in user."""
     session[CURR_USER_KEY] = user.id
@@ -44,13 +51,11 @@ def do_login(user):
 
 def do_logout():
     """Log out user."""
-    breakpoint()
+    # breakpoint()
     if CURR_USER_KEY in session:
         del session[CURR_USER_KEY]
 
-def add_csrf_form_to_g():
-    """Add csrf form to Flask global."""
-    g.csrf_form = CSRFForm()
+
 
 @app.route('/signup', methods=["GET", "POST"])
 def signup():
@@ -119,6 +124,7 @@ def logout():
 
     if form.validate_on_submit():
         do_logout()
+        flash("You are successfully logged out.", "success")
 
     return redirect("/")
 
@@ -325,7 +331,7 @@ def homepage():
                     .order_by(Message.timestamp.desc())
                     .limit(100)
                     .all())
-
+        
         return render_template('home.html', messages=messages)
 
     else:

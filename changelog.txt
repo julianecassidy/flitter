@@ -1,0 +1,7 @@
+#CHANGELOG
+
+# 1.1
+
+## Fixed
+- Made logout in nav bar a post request
+- Updated logout route to logout and flash success
