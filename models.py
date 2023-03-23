@@ -46,7 +46,7 @@ class Likes(db.Model):
         db.ForeignKey('users.id', ondelete="CASCADE"),
         primary_key=True
     )
- 
+
 
 class Message(db.Model):
     """An individual message ("warble")."""
@@ -138,8 +138,8 @@ class User(db.Model):
     liked_messages = db.relationship(
         'Message',
         secondary='likes',
-        primaryjoin=(Likes.message_id == Message.id),
-        secondaryjoin=(Likes.user_id == id),
+        primaryjoin=(Likes.user_id == id),
+        secondaryjoin=(Likes.message_id == Message.id),
         backref='liking_users'
         )
 
