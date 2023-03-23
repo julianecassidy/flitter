@@ -352,16 +352,29 @@ def like_message(message_id):
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect("/")
-
+    
     form = g.csrf_form
 
     msg = Message.query.get_or_404(message_id)
-
+ 
+    # check if message is not liked
     if form.validate_on_submit():
-        like = Likes(message_id=message_id, user_id=g.user.id)
+        if msg not in g.user.liked_messages:
+            like = Likes(message_id=message_id, user_id=g.user.id)
+            #g.user.liked_messages.append(Likes(message_id=message_id))
 
-        db.session.add(like)
-        db.session.commit()
+            db.session.add(like)
+
+    # if already liked
+      # remove like from the database
+        else:
+            print("else statement entered")
+            Likes.query.filter_by(
+                message_id=message_id,
+                user_id=g.user.id).delete()
+
+    db.session.commit()
+    # breakpoint()
 
     return render_template('messages/show.html', message=msg)
 
@@ -377,12 +390,11 @@ def homepage():
     - logged in: 100 most recent messages of followed_users
     """
 
-    following_users = g.user.following
-    following_ids = [user.id for user in following_users]
-
-    following_ids.append(g.user.id)
-
     if g.user:
+        following_users = g.user.following
+        following_ids = [user.id for user in following_users]
+        following_ids.append(g.user.id)
+
         messages = (Message
                     .query
                     .filter((Message.user_id.in_(following_ids)))

@@ -422,6 +422,11 @@ p.card-bio {
   justify-self: right;
 }
 
+.bi.bi-star-fill {
+  font-size: 20px;
+  justify-self: right;
+}
+
 /* ============================ Signed out home */
 
 .home-hero {
