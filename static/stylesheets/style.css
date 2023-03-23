@@ -29,6 +29,7 @@ body.error-404 {
   color: #66757f;
   font-size: 13px;
   font-weight: bold;
+  z-index: 100
 }
 
 /* ======================= Nav */
@@ -205,6 +206,7 @@ nav+.container {
 
 .message-area {
   margin-left: 10px;
+  flex-grow: 1
 }
 
 #warbler-hero {
@@ -399,6 +401,25 @@ nav+.container {
 
 p.card-bio {
   margin: 2em 10px 0;
+}
+
+.like-container {
+  display: flex;
+  flex-direction: row;
+  align-items: space-between;
+  justify-content: space-between;
+}
+
+.like-container-home {
+  display: flex;
+  flex-direction: row;
+  justify-content: right;
+  max-width: 100%
+}
+
+.bi.bi-star {
+  font-size: 20px;
+  justify-self: right;
 }
 
 /* ============================ Signed out home */
