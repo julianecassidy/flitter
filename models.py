@@ -11,7 +11,6 @@ db = SQLAlchemy()
 DEFAULT_IMAGE_URL = "/static/images/default-pic.png"
 DEFAULT_HEADER_IMAGE_URL = "/static/images/warbler-hero.jpg"
 
-# TODO: shoulbe be Follow
 class Follows(db.Model):
     """Connection of a follower <-> followed_user."""
 
@@ -29,8 +28,8 @@ class Follows(db.Model):
         primary_key=True,
     )
 
-# TODO: should be Like
-class Likes(db.Model):
+
+class Like(db.Model):
     """Liked messages."""
 
     __tablename__ = "likes"
@@ -41,7 +40,7 @@ class Likes(db.Model):
         primary_key=True
     )
 
-    user_id = db.Column(
+    liking_user_id = db.Column(
         db.Integer,
         db.ForeignKey('users.id', ondelete="CASCADE"),
         primary_key=True
@@ -133,13 +132,13 @@ class User(db.Model):
         backref="following",
     )
 
-    # TODO: test if we change Likes.user_id to a different name if we
-    # still need the primary and secondary join
+    #NOTE: If column names were the same we'd need to use lines 139 and 140 as
+    # a workaround.
     liked_messages = db.relationship(
         'Message',
         secondary='likes',
-        primaryjoin=(Likes.user_id == id),
-        secondaryjoin=(Likes.message_id == Message.id),
+        # primaryjoin=(Likes.user_id == id),
+        # secondaryjoin=(Likes.message_id == Message.id),
         backref='liking_users'
         )
 

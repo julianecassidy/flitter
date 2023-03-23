@@ -6,7 +6,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 
 from forms import UserAddForm, LoginForm, MessageForm, CSRFForm, EditUserForm
-from models import db, connect_db, User, Message, Likes, DEFAULT_HEADER_IMAGE_URL, DEFAULT_IMAGE_URL
+from models import db, connect_db, User, Message, Like, DEFAULT_HEADER_IMAGE_URL, DEFAULT_IMAGE_URL
 
 load_dotenv()
 
@@ -352,16 +352,16 @@ def like_message(message_id):
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect("/")
-    
+
     form = g.csrf_form
 
     msg = Message.query.get_or_404(message_id)
- 
+
     # check if message is not liked
     if form.validate_on_submit():
         if msg not in g.user.liked_messages:
-            like = Likes(message_id=message_id, user_id=g.user.id)
-            #g.user.liked_messages.append(Likes(message_id=message_id))
+            like = Like(message_id=message_id, liking_user_id=g.user.id)
+            #g.user.liked_messages.append(Like(message_id=message_id))
 
             db.session.add(like)
 
@@ -369,9 +369,9 @@ def like_message(message_id):
       # remove like from the database
         else:
             print("else statement entered")
-            Likes.query.filter_by(
+            Like.query.filter_by(
                 message_id=message_id,
-                user_id=g.user.id).delete()
+                liking_user_id=g.user.id).delete()
 
     db.session.commit()
     # breakpoint()
