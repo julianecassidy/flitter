@@ -18,7 +18,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 app.config['SQLALCHEMY_ECHO'] = False
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
 app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
-toolbar = DebugToolbarExtension(app)
+# toolbar = DebugToolbarExtension(app)
 
 connect_db(app)
 
@@ -368,7 +368,6 @@ def like_message(message_id):
 
     msg = Message.query.get_or_404(message_id)
 
-    # check if message is not liked
     if form.validate_on_submit():
         if msg not in g.user.liked_messages:
             like = Like(message_id=message_id, liking_user_id=g.user.id)
@@ -376,8 +375,6 @@ def like_message(message_id):
 
             db.session.add(like)
 
-    # if already liked
-      # remove like from the database
         else:
             print("else statement entered")
             Like.query.filter_by(
@@ -385,9 +382,9 @@ def like_message(message_id):
                 liking_user_id=g.user.id).delete()
 
     db.session.commit()
-    # breakpoint()
 
-    return render_template('messages/show.html', message=msg)
+    # Return to homepage -> TODO: Fix with AJAX/JQuery later.
+    return redirect('/')
 
 ##############################################################################
 # Homepage and error pages
