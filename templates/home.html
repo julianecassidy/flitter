@@ -57,11 +57,19 @@
         </div>
         <!--TODO: conditional for liked posts-->
         <div class="like-container-home">
-          <form action="TBD" method="POST">
+          {% if msg not in g.user.messages %}
+          <form action="/messages/{{ msg.id }}/like" method="POST">
             {{ g.csrf_form.hidden_tag() }}
-            <button class="button-link"><i class="bi bi-star"></i></button>
+            <button class="button-link">
+              {% if msg in g.user.liked_messages %}
+              <i class="bi bi-star-fill"></i>
+              {% else %}
+              <i class="bi bi-star"></i>
+              {% endif %}
+            </button>
           </form>
-      </div>
+        {% endif %}
+        </div>
       </li>
       {% endfor %}
     </ul>
