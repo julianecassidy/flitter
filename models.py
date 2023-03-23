@@ -30,6 +30,54 @@ class Follows(db.Model):
     )
 
 
+class Likes(db.Model):
+    """Liked messages."""
+
+    __tablename__ = "likes"
+
+    message_id = db.Column(
+        db.Integer,
+        db.ForeignKey('messages.id', ondelete="CASCADE"),
+        primary_key=True
+    )
+
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey('users.id', ondelete="CASCADE"),
+        primary_key=True
+    )
+ 
+
+class Message(db.Model):
+    """An individual message ("warble")."""
+
+    __tablename__ = 'messages'
+
+    id = db.Column(
+        db.Integer,
+        primary_key=True,
+    )
+
+    text = db.Column(
+        db.String(140),
+        nullable=False,
+    )
+
+    timestamp = db.Column(
+        db.DateTime,
+        nullable=False,
+        default=datetime.utcnow,
+    )
+
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey('users.id', ondelete='CASCADE'),
+        nullable=False,
+    )
+
+    # # relationship between Messages <-> User via Likes
+
+
 class User(db.Model):
     """User in the system."""
 
@@ -88,6 +136,8 @@ class User(db.Model):
     liked_messages = db.relationship(
         'Message',
         secondary='likes',
+        primaryjoin=(Likes.message_id == Message.id),
+        secondaryjoin=(Likes.user_id == id),
         backref='liking_users'
         )
 
@@ -147,55 +197,6 @@ class User(db.Model):
         found_user_list = [
             user for user in self.following if user == other_user]
         return len(found_user_list) == 1
-
-
-class Message(db.Model):
-    """An individual message ("warble")."""
-
-    __tablename__ = 'messages'
-
-    id = db.Column(
-        db.Integer,
-        primary_key=True,
-    )
-
-    text = db.Column(
-        db.String(140),
-        nullable=False,
-    )
-
-    timestamp = db.Column(
-        db.DateTime,
-        nullable=False,
-        default=datetime.utcnow,
-    )
-
-    user_id = db.Column(
-        db.Integer,
-        db.ForeignKey('users.id', ondelete='CASCADE'),
-        nullable=False,
-    )
-
-    # relationship between Messages <-> User via Likes
-
-
-class Likes(db.Model):
-    """Liked messages."""
-
-    __tablename__ = "likes"
-
-    message_id = db.Column(
-        db.Integer,
-        db.ForeignKey('messages.id', ondelete="CASCADE"),
-        primary_key=True
-    )
-
-    user_id = db.Column(
-        db.Integer,
-        db.ForeignKey('users.id', ondelete="CASCADE"),
-        primary_key=True
-    )
- 
 
 
 def connect_db(app):
