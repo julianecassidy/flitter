@@ -343,6 +343,27 @@ def delete_message(message_id):
 
     return redirect(f"/users/{g.user.id}")
 
+@app.post('/messages/<int:message_id>/like')
+def like_message(message_id):
+
+    # get user
+    # Put user id and message id into likes table
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
+    form = g.csrf_form
+
+    msg = Message.query.get_or_404(message_id)
+
+    if form.validate_on_submit():
+        like = Likes(message_id=message_id, user_id=g.user.id)
+
+        db.session.add(like)
+        db.session.commit()
+
+    return render_template('messages/show.html', message=msg)
 
 ##############################################################################
 # Homepage and error pages
