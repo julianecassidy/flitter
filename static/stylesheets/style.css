@@ -293,6 +293,11 @@ nav+.container {
   z-index: 2;
 }
 
+/* #messages .list-group-item form:not(.message-link) {
+  position: relative;
+  z-index: 2;
+} */
+
 #messages .list-group-item {
   display: flex;
   align-items: flex-start;
@@ -420,11 +425,15 @@ p.card-bio {
 .bi.bi-star {
   font-size: 20px;
   justify-self: right;
+  position: relative;
+  z-index: 1001
 }
 
 .bi.bi-star-fill {
   font-size: 20px;
   justify-self: right;
+  position: relative;
+  z-index: 1001
 }
 
 /* ============================ Signed out home */
