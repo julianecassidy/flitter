@@ -356,30 +356,27 @@ def delete_message(message_id):
 
 @app.post('/messages/<int:message_id>/like')
 def like_message(message_id):
-
-    # get user
-    # Put user id and message id into likes table
-
-    if not g.user:
-        flash("Access unauthorized.", "danger")
-        return redirect("/")
+    #add docstring / indicate toggle + redirect
 
     form = g.csrf_form
 
+    if not g.user or not form.validate_on_submit():
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
     msg = Message.query.get_or_404(message_id)
 
-    if form.validate_on_submit():
-        if msg not in g.user.liked_messages:
-            like = Like(message_id=message_id, liking_user_id=g.user.id)
-            #g.user.liked_messages.append(Like(message_id=message_id))
+    if msg not in g.user.liked_messages:
+        # like = Like(message_id=message_id, user_id=g.user.id)
+        g.user.liked_messages.append(msg)
 
-            db.session.add(like)
+        # db.session.add(like)
 
-        else:
-            print("else statement entered")
-            Like.query.filter_by(
-                message_id=message_id,
-                liking_user_id=g.user.id).delete()
+    else:
+        g.user.liked_messages.remove(msg)
+        # Like.query.filter_by(
+        #     message_id=message_id,
+        #     user_id=g.user.id).delete()
 
     db.session.commit()
 

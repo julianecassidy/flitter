@@ -40,11 +40,19 @@ class Like(db.Model):
         primary_key=True
     )
 
-    liking_user_id = db.Column(
+    user_id = db.Column(
         db.Integer,
         db.ForeignKey('users.id', ondelete="CASCADE"),
         primary_key=True
     )
+
+    # liking_user_id = db.Column(
+    #     db.Integer,
+    #     db.ForeignKey('users.id', ondelete="CASCADE"),
+    #     primary_key=True
+    # )
+
+
 
 
 class Message(db.Model):
@@ -141,6 +149,14 @@ class User(db.Model):
         # secondaryjoin=(Likes.message_id == Message.id),
         backref='liking_users'
         )
+
+    # liked_messages = db.relationship(
+    #     'Message',
+    #     secondary='likes',
+    #     # primaryjoin=(Likes.user_id == id),
+    #     # secondaryjoin=(Likes.message_id == Message.id),
+    #     backref='liking_users'
+    #     )
 
     def __repr__(self):
         return f"<User #{self.id}: {self.username}, {self.email}>"
