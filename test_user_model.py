@@ -49,10 +49,12 @@ class UserModelTestCase(TestCase):
     def test_user_model(self):
         u1 = User.query.get(self.u1_id)
 
-        # User should have no messages & no followers
+        # User should have no messages, no followers & no liked messages
         self.assertEqual(len(u1.messages), 0)
         self.assertEqual(len(u1.followers), 0)
+        self.assertEqual(len(u1.liked_messages), 0)
 
+    #NOTE: Do we need to have self.client as c???
     def test_is_following(self):
         with self.client as c:
             u1 = User.query.get(self.u1_id)
