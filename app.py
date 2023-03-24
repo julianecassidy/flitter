@@ -356,8 +356,9 @@ def delete_message(message_id):
 
 @app.post('/messages/<int:message_id>/like')
 def like_message(message_id):
-    #add docstring / indicate toggle + redirect
-
+    """Toggles liked messages;
+    If message is liked, removes it from Like
+    If unliked, adds it to Like. """
     form = g.csrf_form
 
     if not g.user or not form.validate_on_submit():

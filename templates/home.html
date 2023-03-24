@@ -55,7 +55,6 @@
           <span class="text-muted">{{ msg.timestamp.strftime('%d %B %Y') }}</span>
           <p>{{ msg.text }}</p>
         </div>
-        <!--TODO: conditional for liked posts-->
         <div class="like-container-home">
           {% if msg not in g.user.messages %}
           <form action="/messages/{{ msg.id }}/like" method="POST">
