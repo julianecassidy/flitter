@@ -7,6 +7,7 @@
 
 import os
 from unittest import TestCase
+from sqlalchemy import exc
 
 from models import db, User, Message, Follows
 
@@ -65,7 +66,7 @@ class UserModelTestCase(TestCase):
         with self.client as c:
             u1 = User.query.get(self.u1_id)
             u2 = User.query.get(self.u2_id)
-            
+
             self.assertFalse(u1.is_following(u2))
 
     def test_is_followed_by(self):
@@ -93,7 +94,7 @@ class UserModelTestCase(TestCase):
                 password=password
             )
 
-            self.assertTrue(isinstance(new_user, User))
+            self.assertIsInstance(new_user, User)
             # password is hashed
             self.assertNotEqual(new_user.password, password)
 
@@ -102,44 +103,83 @@ class UserModelTestCase(TestCase):
             # self.assertEqual(len(num_of_users, 3))
 
     def test_user_signup_fail(self):
-    #     #invalid credientials, error
         with self.client as c:
+
             password = 'password'
-            # new_user_1 = User.signup(
-            #     email="abc@email.com",
-            #     password=password
-            # )
 
-            # new_user_2 = User.signup(
-            #     username="TestUser",
-            #     email='',
-            #     password=password
-            # )
+            # Tests no username
+            User.signup(
+                username=None,
+                email="abc@email.com",
+                password=password
+            )
 
-            new_user_3 = User.signup(
+            with self.assertRaises(exc.IntegrityError):
+                db.session.flush()
+
+            db.session.rollback()
+
+            # Tests no email
+            User.signup(
+                username="TestUser",
+                email=None,
+                password=password
+            )
+
+            with self.assertRaises(exc.IntegrityError):
+                db.session.flush()
+
+            db.session.rollback()
+
+            # Tests duplicate username
+            User.signup(
                 username="u1",
                 email="abc@email.com",
                 password=password
             )
 
-            new_user_4 = User.signup(
+            with self.assertRaises(exc.IntegrityError):
+                db.session.flush()
+
+            db.session.rollback()
+
+            #Tests duplicate email
+            User.signup(
                 username="TestUser3",
                 email="u2@email.com",
                 password=password
             )
 
-            # self.assertRaises())
-            # self.assertFalse(isinstance(new_user_2, User))
-            self.assertFalse(isinstance(new_user_3, User))
-            self.assertFalse(isinstance(new_user_4, User))
+            with self.assertRaises(exc.IntegrityError):
+                db.session.flush()
+
+            db.session.rollback()
 
 
-    # def test_user_authenticate(self):
-    #     # valid credientials, authenticate success
+    def test_user_authenticate_valid(self):
+        with self.client as c:
 
-    # def test_user_authenticate_invalid_un(self):
-    #     # invalid credientials, authenticate success
+            u1 = User.query.get(self.u1_id)
 
-    # def test_user_authenticate_invalid_pass(self):
-    #     # invalid credientials, authenticate success
+            logged_in = User.authenticate(username="u1", password="password")
 
+            self.assertIsInstance(logged_in, User)
+
+
+    def test_user_authenticate_invalid(self):
+        with self.client as c:
+
+            # Tests failed attempt with invalid username
+            invalid_username_attempt = User.authenticate(
+                username="wrong_name",
+                password="password")
+
+            self.assertFalse(invalid_username_attempt)
+
+            # Tests failed attempt with invalid password
+            invalid_password_attempt = User.authenticate(
+                username="u1",
+                password="wrong_password"
+            )
+
+            self.assertFalse(invalid_password_attempt)
