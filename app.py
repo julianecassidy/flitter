@@ -30,6 +30,7 @@ connect_db(app)
 @app.before_request
 def add_user_to_g():
     """If we're logged in, add curr user to Flask global."""
+
     if CURR_USER_KEY in session:
         g.user = User.query.get(session[CURR_USER_KEY])
 
@@ -40,21 +41,21 @@ def add_user_to_g():
 @app.before_request
 def add_csrf_form_to_g():
     """Add csrf form to Flask global."""
-    # breakpoint()
+
     g.csrf_form = CSRFForm()
 
 
 def do_login(user):
     """Log in user."""
+
     session[CURR_USER_KEY] = user.id
 
 
 def do_logout():
     """Log out user."""
-    # breakpoint()
+
     if CURR_USER_KEY in session:
         del session[CURR_USER_KEY]
-
 
 
 @app.route('/signup', methods=["GET", "POST"])
@@ -129,10 +130,6 @@ def logout():
     return redirect("/")
 
 
-    # IMPLEMENT THIS AND FIX BUG
-    # DO NOT CHANGE METHOD ON ROUTE
-
-
 ##############################################################################
 # General user routes:
 
@@ -192,6 +189,7 @@ def show_followers(user_id):
 
     user = User.query.get_or_404(user_id)
     return render_template('users/followers.html', user=user)
+
 
 @app.get('/users/<int:user_id>/liked')
 def show_liked_messages(user_id):
@@ -273,6 +271,7 @@ def profile():
     else:
         return render_template("users/edit.html", form=form)
 
+
 @app.post('/users/delete')
 def delete_user():
     """Delete user.
@@ -292,6 +291,7 @@ def delete_user():
         db.session.delete(g.user)
         db.session.commit()
         flash("Profile deleted.", "success")
+
     else:
         return redirect(f"/users/{g.user.id}")
 
@@ -354,11 +354,13 @@ def delete_message(message_id):
 
     return redirect(f"/users/{g.user.id}")
 
+
 @app.post('/messages/<int:message_id>/like')
 def like_message(message_id):
     """Toggles liked messages;
     If message is liked, removes it from Like
     If unliked, adds it to Like. """
+
     form = g.csrf_form
 
     if not g.user or not form.validate_on_submit():
@@ -368,25 +370,19 @@ def like_message(message_id):
     msg = Message.query.get_or_404(message_id)
 
     if msg not in g.user.liked_messages:
-        # like = Like(message_id=message_id, user_id=g.user.id)
         g.user.liked_messages.append(msg)
-
-        # db.session.add(like)
 
     else:
         g.user.liked_messages.remove(msg)
-        # Like.query.filter_by(
-        #     message_id=message_id,
-        #     user_id=g.user.id).delete()
 
     db.session.commit()
 
     # Return to homepage -> TODO: Fix with AJAX/JQuery later.
     return redirect('/')
 
+
 ##############################################################################
 # Homepage and error pages
-
 
 @app.get('/')
 def homepage():

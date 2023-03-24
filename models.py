@@ -28,6 +28,8 @@ class Follows(db.Model):
         primary_key=True,
     )
 
+    # relationship between User <-> User via Follows
+
 
 class Like(db.Model):
     """Liked messages."""
@@ -46,13 +48,7 @@ class Like(db.Model):
         primary_key=True
     )
 
-    # liking_user_id = db.Column(
-    #     db.Integer,
-    #     db.ForeignKey('users.id', ondelete="CASCADE"),
-    #     primary_key=True
-    # )
-
-
+    # relationship between Messages <-> User via Likes
 
 
 class Message(db.Model):
@@ -82,7 +78,7 @@ class Message(db.Model):
         nullable=False,
     )
 
-    # # relationship between Messages <-> User via Likes
+    # relationship between Messages <-> User via Likes
 
 
 class User(db.Model):
@@ -140,23 +136,11 @@ class User(db.Model):
         backref="following",
     )
 
-    #NOTE: If column names were the same we'd need to use lines 139 and 140 as
-    # a workaround.
     liked_messages = db.relationship(
         'Message',
         secondary='likes',
-        # primaryjoin=(Likes.user_id == id),
-        # secondaryjoin=(Likes.message_id == Message.id),
         backref='liking_users'
         )
-
-    # liked_messages = db.relationship(
-    #     'Message',
-    #     secondary='likes',
-    #     # primaryjoin=(Likes.user_id == id),
-    #     # secondaryjoin=(Likes.message_id == Message.id),
-    #     backref='liking_users'
-    #     )
 
     def __repr__(self):
         return f"<User #{self.id}: {self.username}, {self.email}>"

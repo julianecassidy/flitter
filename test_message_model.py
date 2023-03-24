@@ -32,7 +32,9 @@ db.create_all()
 
 class MessageModelTestCase(TestCase):
     def setUp(self):
+        User.query.delete()
         Message.query.delete()
+        Like.query.delete()
 
         u1 = User.signup("u1", "u1@email.com", "password", None)
         u2 = User.signup("u2", "u2@email.com", "password", None)
@@ -72,16 +74,60 @@ class MessageModelTestCase(TestCase):
 
             self.assertTrue(u1 == m2.user)
 
-        # Test that user.message/message.user works,
-        # Test that message is added to db
+    def test_create_message_invalid(self):
+        with self.client as c:
+            # Tests no text content
+            message_no_text = Message(
+                text=None,
+                user_id=self.u1_id
+            )
 
-    # def test_create_message()
-        # Test that a valid message is created
+            db.session.add(message_no_text)
 
-    # def test_create_message_invalid()
-        # Test that message is not created if non-nullable fields are
-        # None.
+            with self.assertRaises(exc.IntegrityError):
+                db.session.flush()
 
-    # def test_liking_users()
-        # Test relationship between message <-> users (liking_users)
-        # Test relationship between message <-> likes (liked_messages)
+            db.session.rollback()
+
+            # Tests text content that is too long
+            message_too_long = Message(
+                text="""We are insurance advisors in Phoenix, AZ, providing 
+                tailored personal insurance for home, autos, property, and 
+                businesses. With our attention to detail and personalized 
+                conversation with our clients, we are able to be a trusted 
+                insurance partner.""",
+                user_id=self.u1_id
+            )
+
+            db.session.add(message_too_long)
+
+            with self.assertRaises(exc.DataError):
+                db.session.flush()
+
+            db.session.rollback()
+
+            # Tests no user ID
+            message_no_user_id = Message(
+                text="Test Message",
+                user_id=None
+            )
+
+            db.session.add(message_no_user_id)
+
+            with self.assertRaises(exc.IntegrityError):
+                db.session.flush()
+
+            db.session.rollback()          
+
+    def test_liking_users(self):
+        with self.client as c:
+
+            u1 = User.query.get(self.u1_id)
+            m2 = Message.query.get(self.m2_id)
+
+            self.assertTrue(len(u1.liked_messages), 1)
+            self.assertIn(m2, u1.liked_messages)
+
+            self.assertTrue(len(m2.liking_users), 1)
+            self.assertIn(u1, m2.liking_users)
+
