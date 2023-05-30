@@ -209,7 +209,7 @@ nav+.container {
   flex-grow: 1
 }
 
-#warbler-hero {
+#flitter-hero {
   height: 360px;
   margin-top: -16px;
   opacity: 0.7;
@@ -217,7 +217,7 @@ nav+.container {
   background-position: top center;
 }
 
-#warbler-hero img {
+#flitter-hero img {
   object-fit: cover;
   object-position: 0, 10%;
   width: 100%;

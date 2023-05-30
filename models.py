@@ -1,4 +1,4 @@
-"""SQLAlchemy models for Warbler."""
+"""SQLAlchemy models for Flitter."""
 
 from datetime import datetime
 
@@ -9,7 +9,7 @@ bcrypt = Bcrypt()
 db = SQLAlchemy()
 
 DEFAULT_IMAGE_URL = "/static/images/default-pic.png"
-DEFAULT_HEADER_IMAGE_URL = "/static/images/warbler-hero.jpg"
+DEFAULT_HEADER_IMAGE_URL = "/static/images/flitter-hero.jpg"
 
 class Follows(db.Model):
     """Connection of a follower <-> followed_user."""

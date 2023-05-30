@@ -1,4 +1,4 @@
-"""Generate CSVs of random data for Warbler.
+"""Generate CSVs of random data for Flitter.
 
 Students won't need to run this for the exercise; they will just use the CSV
 files that this generates. You should only need to run this if you wanted to
@@ -19,7 +19,7 @@ load_dotenv()
 
 UNSPLASH_CID = os.environ['UNSPLASH_CID']
 
-MAX_WARBLER_LENGTH = 140
+MAX_FLITTER_LENGTH = 140
 
 USERS_CSV_HEADERS = ['email', 'username', 'image_url', 'password', 'bio', 'header_image_url', 'location']
 MESSAGES_CSV_HEADERS = ['text', 'timestamp', 'user_id']
@@ -72,7 +72,7 @@ with open('generator/messages.csv', 'w') as messages_csv:
 
     for i in range(NUM_MESSAGES):
         messages_writer.writerow(dict(
-            text=fake.paragraph()[:MAX_WARBLER_LENGTH],
+            text=fake.paragraph()[:MAX_FLITTER_LENGTH],
             timestamp=get_random_datetime(),
             user_id=randint(1, NUM_USERS)
         ))

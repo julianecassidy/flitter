@@ -15,7 +15,7 @@ from models import db, Message, User
 # before we import our app, since that will have already
 # connected to the database
 
-os.environ['DATABASE_URL'] = "postgresql:///warbler_test"
+os.environ['DATABASE_URL'] = "postgresql:///flitter_test"
 
 # Now we can import app
 
