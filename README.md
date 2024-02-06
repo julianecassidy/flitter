@@ -16,7 +16,7 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/julianecassidy/flitter)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/julianecassidy/flitter)
 ![GitHub last commit](https://img.shields.io/github/last-commit/julianecassidy/flitter)
-![GitHub](https://img.shields.io/github/license/julianecassidy/flitter)
+<!-- ![GitHub](https://img.shields.io/github/license/julianecassidy/flitter) -->
 
 </div>
 
@@ -196,6 +196,7 @@ To get a local copy up and running follow these steps:
 ## Contact
 
 [JulianeCassidy](https://julianecassidy.com)
+
 [LinkedIn](https://www.linkedin.com/in/julianemcassidy/)
 
 Project Link: [https://github.com/julianecassidy/flitter](https://github.com/julianecassidy/flitter)
