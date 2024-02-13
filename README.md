@@ -73,27 +73,27 @@ You can log into the [demo site](https://flitter.julianecassidy.com/) with the f
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- ### Screenshots
+### Screenshots
 
 <p>
-  <img src="static/images/screenshots/timeline.png" alt="Logged In Timeline">
+  <img src="static/images/screenshots/homepage.png" alt="Logged in homepage">
   <br>
-  <em>Logged-In Timeline</em>
+  <em>Homepage for logged in users</em>
 </p>
 
 <p>
-  <img src="static/images/screenshots/profile.png" alt="User Profile Page">
+  <img src="static/images/screenshots/user-page.png" alt="User profile page">
   <br>
-  <em>User Profile Page</em>
+  <em>User profile page</em>
 </p>
 
 <p>
-  <img src="static/images/screenshots/followers.png" alt="Followers Listing Page">
+  <img src="static/images/screenshots/add-message.png" alt="Add a new message saying hello">
   <br>
-  <em>Followers Listing Page</em>
+  <em>Add a new message</em>
 </p>
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p> -->
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Key Features
 
